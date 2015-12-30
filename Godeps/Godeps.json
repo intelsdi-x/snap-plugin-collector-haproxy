@@ -1,0 +1,10 @@
+{
+	"ImportPath": "github.com/intelsdi-x/snap-plugin-collector-haproxy",
+	"GoVersion": "go1.5",
+	"Deps": [
+	  	{
+			"ImportPath": "github.com/intelsdi-x/snap-plugin-utilities",
+			"Rev": "c333dab33506e272a3a8ba1d961b60180f6ab35f"
+		}
+	]
+}

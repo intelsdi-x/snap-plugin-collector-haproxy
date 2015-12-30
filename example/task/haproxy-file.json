@@ -1,0 +1,39 @@
+{
+    "version": 1,
+    "schedule": {
+        "type": "simple",
+        "interval": "1s"
+    },
+    "workflow": {
+        "collect": {
+            "metrics": {
+                "/intel/linux/haproxy/info/CurrConns": {},
+                "/intel/linux/haproxy/info/Run_queue": {}, 
+                "/intel/linux/haproxy/stat/<service_name>/<proxy_name>/qlimit": {},
+                "/intel/linux/haproxy/stat/<service_name>/<proxy_name>/chkdown": {}
+            },
+            "config": {
+                "/intel/mock": {
+                    "password": "secret",
+                    "user": "root"
+                }
+            },
+            "process": [
+                {
+                    "plugin_name": "passthru",
+                    "process": null,
+                    "publish": [
+                        {                         
+                            "plugin_name": "file",
+                            "config": {
+                                "file": "/tmp/published_haproxy"
+                            }
+                        }
+                    ],
+                    "config": null
+                }
+            ],
+            "publish": null
+        }
+    }
+}

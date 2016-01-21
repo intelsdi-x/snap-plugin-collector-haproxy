@@ -55,39 +55,39 @@ This plugin has the ability to gather the following metrics:
 
 Namespace | Description (optional)
 ----------|-----------------------
-/intel/linux/lhaproxy/info/Nbproc |
-/intel/linux/lhaproxy/info/Hard_maxconn |
-/intel/linux/lhaproxy/info/SessRateLimit |
-/intel/linux/lhaproxy/info/CumReq |
-/intel/linux/lhaproxy/info/Process_num |
-/intel/linux/lhaproxy/info/Uptime |
-/intel/linux/lhaproxy/info/CumConns |
-/intel/linux/lhaproxy/info/MaxSessRate |
-/intel/linux/lhaproxy/info/Version |
-/intel/linux/lhaproxy/info/CurrConns |
-/intel/linux/lhaproxy/info/MaxConnRate |
-/intel/linux/lhaproxy/info/CompressBpsIn | 
-/intel/linux/lhaproxy/info/Run_queue |
-/intel/linux/lhaproxy/info/Uptime_sec |
-/intel/linux/lhaproxy/info/Maxsock |
-/intel/linux/lhaproxy/info/ConnRateLimit |
-/intel/linux/lhaproxy/info/PipesFree |
-/intel/linux/lhaproxy/info/Memmax_MB |
-/intel/linux/lhaproxy/info/Ulimit-n |
-/intel/linux/lhaproxy/info/Maxpipes | 
-/intel/linux/lhaproxy/info/CompressBpsOut |
-/intel/linux/lhaproxy/info/CompressBpsRateLim |
-/intel/linux/lhaproxy/info/Idle_pct |
-/intel/linux/lhaproxy/info/node |
-/intel/linux/lhaproxy/info/Release_date |
-/intel/linux/lhaproxy/info/ConnRate |
-/intel/linux/lhaproxy/info/SessRate |
-/intel/linux/lhaproxy/info/PipesUsed |
-/intel/linux/lhaproxy/info/Tasks |
-/intel/linux/lhaproxy/info/description |
-/intel/linux/lhaproxy/info/Name |
-/intel/linux/lhaproxy/info/Pid |
-/intel/linux/lhaproxy/info/Maxconn |
+/intel/linux/haproxy/info/Nbproc |
+/intel/linux/haproxy/info/Hard_maxconn |
+/intel/linux/haproxy/info/SessRateLimit |
+/intel/linux/haproxy/info/CumReq |
+/intel/linux/haproxy/info/Process_num |
+/intel/linux/haproxy/info/Uptime |
+/intel/linux/haproxy/info/CumConns |
+/intel/linux/haproxy/info/MaxSessRate |
+/intel/linux/haproxy/info/Version |
+/intel/linux/haproxy/info/CurrConns |
+/intel/linux/haproxy/info/MaxConnRate |
+/intel/linux/haproxy/info/CompressBpsIn | 
+/intel/linux/haproxy/info/Run_queue |
+/intel/linux/haproxy/info/Uptime_sec |
+/intel/linux/haproxy/info/Maxsock |
+/intel/linux/haproxy/info/ConnRateLimit |
+/intel/linux/haproxy/info/PipesFree |
+/intel/linux/haproxy/info/Memmax_MB |
+/intel/linux/haproxy/info/Ulimit-n |
+/intel/linux/haproxy/info/Maxpipes | 
+/intel/linux/haproxy/info/CompressBpsOut |
+/intel/linux/haproxy/info/CompressBpsRateLim |
+/intel/linux/haproxy/info/Idle_pct |
+/intel/linux/haproxy/info/node |
+/intel/linux/haproxy/info/Release_date |
+/intel/linux/haproxy/info/ConnRate |
+/intel/linux/haproxy/info/SessRate |
+/intel/linux/haproxy/info/PipesUsed |
+/intel/linux/haproxy/info/Tasks |
+/intel/linux/haproxy/info/description |
+/intel/linux/haproxy/info/Name |
+/intel/linux/haproxy/info/Pid |
+/intel/linux/haproxy/info/Maxconn |
 /intel/linux/haproxy/stat/\<service_name\>/\<proxy_name\>/qcur | current queued requests. For the backend this reports the number queued without a server assigned.
 /intel/linux/haproxy/stat/\<service_name\>/\<proxy_name\>/qmax | max value of qcur
 /intel/linux/haproxy/stat/\<service_name\>/\<proxy_name\>/scur | current sessions

@@ -39,8 +39,6 @@ import (
 const (
 	// VENDOR namespace part
 	VENDOR = "intel"
-	// OS namespace part
-	OS = "linux"
 	// PLUGIN name namespace part
 	PLUGIN = "haproxy"
 	// VERSION of haproxy plugin
@@ -76,7 +74,7 @@ func (ha *haproxyPlugin) GetMetricTypes(cfg plugin.PluginConfigType) ([]plugin.P
 				return nil, err
 			}
 			for stat := range stats {
-				namespace := []string{VENDOR, OS, PLUGIN, ncinfo, stat}
+				namespace := []string{VENDOR, PLUGIN, ncinfo, stat}
 				metricTypes = append(metricTypes, plugin.PluginMetricType{Namespace_: namespace})
 			}
 		case ncstat:
@@ -100,7 +98,7 @@ func (ha *haproxyPlugin) GetMetricTypes(cfg plugin.PluginConfigType) ([]plugin.P
 				delete(stats, "pxname")
 
 				for stat := range stats {
-					namespace := []string{VENDOR, OS, PLUGIN, ncstat, svname, pxname, stat}
+					namespace := []string{VENDOR, PLUGIN, ncstat, svname, pxname, stat}
 					metricTypes = append(metricTypes, plugin.PluginMetricType{Namespace_: namespace})
 				}
 			}
@@ -131,23 +129,23 @@ func (ha *haproxyPlugin) CollectMetrics(metricTypes []plugin.PluginMetricType) (
 
 	for _, metricType := range metricTypes {
 		namespace := metricType.Namespace()
-		if len(namespace) < 5 {
+		if len(namespace) < 4 {
 			return nil, fmt.Errorf("Namespace length is incorrect %d", len(namespace))
 		}
-		mode := namespace[3]
+		mode := namespace[2]
 		switch mode {
 		case ncinfo:
 			stats, err := parseInfo(ncInfoData, ncinfosep)
 			if err != nil {
 				return nil, err
 			}
-			stat := namespace[4]
+			stat := namespace[3]
 			val, ok := stats[stat]
 			if !ok {
 				return nil, fmt.Errorf("Requested metric is not found {%s}", strings.Join(namespace, "/"))
 			}
 			metrics = append(metrics, plugin.PluginMetricType{
-				Namespace_: []string{VENDOR, OS, PLUGIN, ncinfo, stat},
+				Namespace_: []string{VENDOR, PLUGIN, ncinfo, stat},
 				Data_:      val,
 				Version_:   VERSION,
 				Timestamp_: time.Now(),
@@ -155,8 +153,8 @@ func (ha *haproxyPlugin) CollectMetrics(metricTypes []plugin.PluginMetricType) (
 			})
 
 		case ncstat:
-			svname := namespace[4]
-			pxname := namespace[5]
+			svname := namespace[3]
+			pxname := namespace[4]
 
 			all, err := parseStats(ncStatData, ncstatsep)
 			if err != nil {
@@ -164,7 +162,7 @@ func (ha *haproxyPlugin) CollectMetrics(metricTypes []plugin.PluginMetricType) (
 			}
 
 			for _, stats := range all {
-				stat := namespace[6]
+				stat := namespace[5]
 				sv, _ := stats["svname"]
 				px, _ := stats["pxname"]
 				val, ok := stats[stat]

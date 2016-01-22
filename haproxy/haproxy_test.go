@@ -82,18 +82,18 @@ func (hps *HaproxyPluginSuite) TestGetMetricTypes() {
 					namespace = append(namespace, strings.Join(m.Namespace(), "/"))
 				}
 
-				So(namespace, ShouldContain, "intel/linux/haproxy/stat/FRONTEND/LB/qcur")
-				So(namespace, ShouldContain, "intel/linux/haproxy/stat/FRONTEND/LB/qmax")
-				So(namespace, ShouldContain, "intel/linux/haproxy/stat/FRONTEND/LB/rtime")
-				So(namespace, ShouldContain, "intel/linux/haproxy/stat/FRONTEND/LB/ttime")
-				So(namespace, ShouldContain, "intel/linux/haproxy/stat/Server01/LB/qcur")
-				So(namespace, ShouldContain, "intel/linux/haproxy/stat/Server01/LB/qmax")
-				So(namespace, ShouldContain, "intel/linux/haproxy/stat/Server01/LB/rtime")
-				So(namespace, ShouldContain, "intel/linux/haproxy/stat/Server01/LB/ttime")
-				So(namespace, ShouldContain, "intel/linux/haproxy/info/Maxsock")
-				So(namespace, ShouldContain, "intel/linux/haproxy/info/Tasks")
-				So(namespace, ShouldContain, "intel/linux/haproxy/info/CurrConns")
-				So(namespace, ShouldContain, "intel/linux/haproxy/info/CumReq")
+				So(namespace, ShouldContain, "intel/haproxy/stat/FRONTEND/LB/qcur")
+				So(namespace, ShouldContain, "intel/haproxy/stat/FRONTEND/LB/qmax")
+				So(namespace, ShouldContain, "intel/haproxy/stat/FRONTEND/LB/rtime")
+				So(namespace, ShouldContain, "intel/haproxy/stat/FRONTEND/LB/ttime")
+				So(namespace, ShouldContain, "intel/haproxy/stat/Server01/LB/qcur")
+				So(namespace, ShouldContain, "intel/haproxy/stat/Server01/LB/qmax")
+				So(namespace, ShouldContain, "intel/haproxy/stat/Server01/LB/rtime")
+				So(namespace, ShouldContain, "intel/haproxy/stat/Server01/LB/ttime")
+				So(namespace, ShouldContain, "intel/haproxy/info/Maxsock")
+				So(namespace, ShouldContain, "intel/haproxy/info/Tasks")
+				So(namespace, ShouldContain, "intel/haproxy/info/CurrConns")
+				So(namespace, ShouldContain, "intel/haproxy/info/CumReq")
 			})
 		})
 	})
@@ -106,27 +106,27 @@ func (hps *HaproxyPluginSuite) TestCollectMetrics() {
 		Convey("When one wants to get values for requested meterics", func() {
 			mts := []plugin.PluginMetricType{
 				plugin.PluginMetricType{
-					Namespace_: []string{VENDOR, OS, PLUGIN, ncstat, "FRONTEND", "LB", "slim"},
+					Namespace_: []string{VENDOR, PLUGIN, ncstat, "FRONTEND", "LB", "slim"},
 					Config_:    hps.dataNode,
 				},
 				plugin.PluginMetricType{
-					Namespace_: []string{VENDOR, OS, PLUGIN, ncstat, "FRONTEND", "LB", "status"},
+					Namespace_: []string{VENDOR, PLUGIN, ncstat, "FRONTEND", "LB", "status"},
 					Config_:    hps.dataNode,
 				},
 				plugin.PluginMetricType{
-					Namespace_: []string{VENDOR, OS, PLUGIN, ncstat, "Server01", "LB", "lastchg"},
+					Namespace_: []string{VENDOR, PLUGIN, ncstat, "Server01", "LB", "lastchg"},
 					Config_:    hps.dataNode,
 				},
 				plugin.PluginMetricType{
-					Namespace_: []string{VENDOR, OS, PLUGIN, ncstat, "Server01", "LB", "ttime"},
+					Namespace_: []string{VENDOR, PLUGIN, ncstat, "Server01", "LB", "ttime"},
 					Config_:    hps.dataNode,
 				},
 				plugin.PluginMetricType{
-					Namespace_: []string{VENDOR, OS, PLUGIN, ncinfo, "Maxsock"},
+					Namespace_: []string{VENDOR, PLUGIN, ncinfo, "Maxsock"},
 					Config_:    hps.dataNode,
 				},
 				plugin.PluginMetricType{
-					Namespace_: []string{VENDOR, OS, PLUGIN, ncinfo, "CurrConns"},
+					Namespace_: []string{VENDOR, PLUGIN, ncinfo, "CurrConns"},
 					Config_:    hps.dataNode,
 				},
 			}
@@ -142,7 +142,7 @@ func (hps *HaproxyPluginSuite) TestCollectMetrics() {
 
 				stats := map[string]interface{}{}
 				for _, m := range metrics {
-					stat := strings.Join(m.Namespace()[3:], "/")
+					stat := strings.Join(m.Namespace()[2:], "/")
 					stats[stat] = m.Data()
 				}
 

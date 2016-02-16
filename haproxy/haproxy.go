@@ -253,14 +253,14 @@ func (sock *uSocket) Read(socketName string, mode string) ([]string, error) {
 		done <- true
 	}()
 
+	<-done
+
 	if err = cmd1.Wait(); err != nil {
 		return nil, err
 	}
 	if err = cmd2.Wait(); err != nil {
 		return nil, err
 	}
-
-	<-done
 
 	return csv, nil
 }

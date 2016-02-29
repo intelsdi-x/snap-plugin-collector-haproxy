@@ -2,7 +2,7 @@
 http://www.apache.org/licenses/LICENSE-2.0.txt
 
 
-Copyright 2015 Intel Corporation
+Copyright 2015-2016 Intel Corporation
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -146,29 +146,30 @@ func (hps *HaproxyPluginSuite) TestCollectMetrics() {
 					stats[stat] = m.Data()
 				}
 
-				val, ok := stats["stat/FRONTEND/LB/slim"].(string)
+				val, ok := stats["stat/FRONTEND/LB/slim"].(int64)
 				So(ok, ShouldBeTrue)
-				So(val, ShouldEqual, "2000")
+				So(val, ShouldEqual, 2000)
 
-				val, ok = stats["stat/FRONTEND/LB/status"].(string)
-				So(ok, ShouldBeTrue)
-				So(val, ShouldEqual, "OPEN")
+				val1, ok1 := stats["stat/FRONTEND/LB/status"].(string)
+				So(ok1, ShouldBeTrue)
+				So(val1, ShouldEqual, "OPEN")
 
-				val, ok = stats["stat/Server01/LB/lastchg"].(string)
-				So(ok, ShouldBeTrue)
-				So(val, ShouldEqual, "3235")
+				val2, ok2 := stats["stat/Server01/LB/lastchg"].(int64)
+				So(ok2, ShouldBeTrue)
+				So(val2, ShouldEqual, 3235)
 
-				val, ok = stats["stat/Server01/LB/ttime"].(string)
-				So(ok, ShouldBeTrue)
-				So(val, ShouldEqual, "0")
+				val3, ok3 := stats["stat/Server01/LB/ttime"].(int64)
+				So(ok3, ShouldBeTrue)
+				So(val3, ShouldEqual, 0)
 
-				val, ok = stats["info/Maxsock"].(string)
-				So(ok, ShouldBeTrue)
-				So(val, ShouldEqual, "4444")
+				val4, ok4 := stats["info/Maxsock"].(int64)
+				So(ok4, ShouldBeTrue)
+				So(val4, ShouldEqual, 4444)
 
-				val, ok = stats["info/CurrConns"].(string)
-				So(ok, ShouldBeTrue)
-				So(val, ShouldEqual, "4")
+				val5, ok5 := stats["info/CurrConns"].(int64)
+				So(ok5, ShouldBeTrue)
+				So(val5, ShouldEqual, 4)
+
 			})
 		})
 	})

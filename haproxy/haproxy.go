@@ -4,7 +4,7 @@
 http://www.apache.org/licenses/LICENSE-2.0.txt
 
 
-Copyright 2015 Intel Corporation
+Copyright 2015-2016 Intel Corporation
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -27,13 +27,15 @@ import (
 	"io"
 	"os"
 	"os/exec"
+	"strconv"
 	"strings"
 	"time"
 
+	log "github.com/Sirupsen/logrus"
 	"github.com/intelsdi-x/snap-plugin-utilities/config"
-
 	"github.com/intelsdi-x/snap/control/plugin"
 	"github.com/intelsdi-x/snap/control/plugin/cpolicy"
+	"github.com/intelsdi-x/snap/core/serror"
 )
 
 const (
@@ -42,7 +44,7 @@ const (
 	// PLUGIN name namespace part
 	PLUGIN = "haproxy"
 	// VERSION of haproxy plugin
-	VERSION = 1
+	VERSION = 2
 
 	ncinfo    = "info"
 	ncstat    = "stat"
@@ -50,7 +52,11 @@ const (
 	ncstatsep = ","
 )
 
-var ncModes = []string{ncinfo, ncstat}
+var (
+	ncModes             = []string{ncinfo, ncstat}
+	ncinfoStringMetrics = map[string]bool{"Name": true, "Release_date": true, "Uptime": true, "Version": true, "description": true, "node": true}
+	ncstatStringMetrics = map[string]bool{"status": true, "check_status": true, "hanafail": true, "last_chk": true, "last_agt": true}
+)
 
 // GetMetricTypes returns list of available metric types
 // It returns error in case retrieval was not successful
@@ -144,9 +150,11 @@ func (ha *haproxyPlugin) CollectMetrics(metricTypes []plugin.PluginMetricType) (
 			if !ok {
 				return nil, fmt.Errorf("Requested metric is not found {%s}", strings.Join(namespace, "/"))
 			}
+
+			valConverted := setMetricType(namespace, val, ncinfoStringMetrics)
 			metrics = append(metrics, plugin.PluginMetricType{
 				Namespace_: []string{VENDOR, PLUGIN, ncinfo, stat},
-				Data_:      val,
+				Data_:      valConverted,
 				Version_:   VERSION,
 				Timestamp_: time.Now(),
 				Source_:    ha.host,
@@ -167,9 +175,10 @@ func (ha *haproxyPlugin) CollectMetrics(metricTypes []plugin.PluginMetricType) (
 				px, _ := stats["pxname"]
 				val, ok := stats[stat]
 				if sv == svname && px == pxname && ok {
+					valConverted := setMetricType(namespace, val, ncstatStringMetrics)
 					metrics = append(metrics, plugin.PluginMetricType{
 						Namespace_: namespace,
-						Data_:      val,
+						Data_:      valConverted,
 						Version_:   VERSION,
 						Timestamp_: time.Now(),
 						Source_:    ha.host,
@@ -316,4 +325,22 @@ func parseInfo(data []string, sep string) (map[string]string, error) {
 	}
 
 	return stats, nil
+}
+
+func setMetricType(nc []string, val interface{}, stringMetricsTab map[string]bool) interface{} {
+	if stringMetricsTab[nc[len(nc)-1]] {
+		return val
+	}
+	parsedVal, err := strconv.ParseInt(val.(string), 10, 64)
+	if err != nil {
+		f := map[string]interface{}{
+			"namespace": strings.Join(nc, "/"),
+			"val":       val,
+			"parsedVal": parsedVal,
+		}
+		se := serror.New(err, f)
+		log.WithFields(se.Fields()).Warn("Cannot parse metric value to number, metric value saved as -1, ", se.String())
+		parsedVal = -1
+	}
+	return parsedVal
 }

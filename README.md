@@ -53,116 +53,116 @@ This builds the plugin in `/build/rootfs/`
 ### Collected Metrics
 This plugin has the ability to gather the following metrics:
 
-Namespace | Description (optional)
-----------|-----------------------
-/intel/haproxy/info/CompressBpsIn |
-/intel/haproxy/info/CompressBpsOut |
-/intel/haproxy/info/CompressBpsRateLim |
-/intel/haproxy/info/ConnRate |
-/intel/haproxy/info/ConnRateLimit |
-/intel/haproxy/info/CumConns |
-/intel/haproxy/info/CumReq |
-/intel/haproxy/info/CumSslConns |
-/intel/haproxy/info/CurrConns |
-/intel/haproxy/info/CurrSslConns |
-/intel/haproxy/info/Hard_maxconn |
-/intel/haproxy/info/Idle_pct |
-/intel/haproxy/info/MaxConnRate |
-/intel/haproxy/info/MaxSessRate |
-/intel/haproxy/info/MaxSslConns |
-/intel/haproxy/info/MaxSslRate |
-/intel/haproxy/info/MaxZlibMemUsage |
-/intel/haproxy/info/Maxconn |
-/intel/haproxy/info/Maxpipes |
-/intel/haproxy/info/Maxsock |
-/intel/haproxy/info/Memmax_MB |
-/intel/haproxy/info/Name |
-/intel/haproxy/info/Nbproc |
-/intel/haproxy/info/Pid |
-/intel/haproxy/info/PipesFree |
-/intel/haproxy/info/PipesUsed |
-/intel/haproxy/info/Process_num |
-/intel/haproxy/info/Release_date |
-/intel/haproxy/info/Run_queue |
-/intel/haproxy/info/SessRate |
-/intel/haproxy/info/SessRateLimit |
-/intel/haproxy/info/SslBackendKeyRate |
-/intel/haproxy/info/SslBackendMaxKeyRate |
-/intel/haproxy/info/SslCacheLookups |
-/intel/haproxy/info/SslCacheMisses |
-/intel/haproxy/info/SslFrontendKeyRate |
-/intel/haproxy/info/SslFrontendMaxKeyRate |
-/intel/haproxy/info/SslFrontendSessionReuse_pct |
-/intel/haproxy/info/SslRate |
-/intel/haproxy/info/SslRateLimit |
-/intel/haproxy/info/Tasks |
-/intel/haproxy/info/Ulimit-n |
-/intel/haproxy/info/Uptime |
-/intel/haproxy/info/Uptime_sec |
-/intel/haproxy/info/Version |
-/intel/haproxy/info/ZlibMemUsage |
-/intel/haproxy/info/description |
-/intel/haproxy/info/node |
-/intel/haproxy/stat/\<service_name\>/\<proxy_name\>/qcur | current queued requests. For the backend this reports the number queued without a server assigned.
-/intel/haproxy/stat/\<service_name\>/\<proxy_name\>/qmax | max value of qcur
-/intel/haproxy/stat/\<service_name\>/\<proxy_name\>/scur | current sessions
-/intel/haproxy/stat/\<service_name\>/\<proxy_name\>/smax | max sessions
-/intel/haproxy/stat/\<service_name\>/\<proxy_name\>/slim | configured session limit
-/intel/haproxy/stat/\<service_name\>/\<proxy_name\>/stot | cumulative number of connections
-/intel/haproxy/stat/\<service_name\>/\<proxy_name\>/bin | bytes in
-/intel/haproxy/stat/\<service_name\>/\<proxy_name\>/bout | bytes out
-/intel/haproxy/stat/\<service_name\>/\<proxy_name\>/dreq | requests denied because of security concerns.
-/intel/haproxy/stat/\<service_name\>/\<proxy_name\>/dresp | responses denied because of security concerns.
-/intel/haproxy/stat/\<service_name\>/\<proxy_name\>/ereq | request errors
-/intel/haproxy/stat/\<service_name\>/\<proxy_name\>/econ | number of requests that encountered an error trying to  connect to a backend server
-/intel/haproxy/stat/\<service_name\>/\<proxy_name\>/eresp | response errors
-/intel/haproxy/stat/\<service_name\>/\<proxy_name\>/wretr | number of times a connection to a server was retried.
-/intel/haproxy/stat/\<service_name\>/\<proxy_name\>/wredis | number of times a request was redispatched to another  server
-/intel/haproxy/stat/\<service_name\>/\<proxy_name\>/status | status (UP/DOWN/NOLB/MAINT/MAINT(via)...)
-/intel/haproxy/stat/\<service_name\>/\<proxy_name\>/weight | total weight (backend), server weight (server)
-/intel/haproxy/stat/\<service_name\>/\<proxy_name\>/act | number of active servers (backend), server is active (server)
-/intel/haproxy/stat/\<service_name\>/\<proxy_name\>/bck | number of backup servers (backend), server is backup (server)
-/intel/haproxy/stat/\<service_name\>/\<proxy_name\>/chkfail | number of failed checks
-/intel/haproxy/stat/\<service_name\>/\<proxy_name\>/chkdown | number of UP->DOWN transitions
-/intel/haproxy/stat/\<service_name\>/\<proxy_name\>/lastchg | number of seconds since the last UP<->DOWN transition
-/intel/haproxy/stat/\<service_name\>/\<proxy_name\>/downtime | total downtime (in seconds)
-/intel/haproxy/stat/\<service_name\>/\<proxy_name\>/qlimit | configured maxqueue for the server, or nothing in the  value is 0 (default, meaning no limit)
-/intel/haproxy/stat/\<service_name\>/\<proxy_name\>/pid | process id (0 for first instance, 1 for second, ...)
-/intel/haproxy/stat/\<service_name\>/\<proxy_name\>/iid | unique proxy id
-/intel/haproxy/stat/\<service_name\>/\<proxy_name\>/sid | server id (unique inside a proxy)
-/intel/haproxy/stat/\<service_name\>/\<proxy_name\>/throttle | current throttle percentage for the server, when slowstart is active, or no value if not in slowstart.
-/intel/haproxy/stat/\<service_name\>/\<proxy_name\>/lbtot | total number of times a server was selected, either for new sessions, or when re-dispatching
-/intel/haproxy/stat/\<service_name\>/\<proxy_name\>/tracked | id of proxy/server if tracking is enabled.
-/intel/haproxy/stat/\<service_name\>/\<proxy_name\>/type | (0=frontend, 1=backend, 2=server, 3=socket/listener)
-/intel/haproxy/stat/\<service_name\>/\<proxy_name\>/rate | number of sessions per second over last elapsed second
-/intel/haproxy/stat/\<service_name\>/\<proxy_name\>/rate_lim | configured limit on new sessions per second
-/intel/haproxy/stat/\<service_name\>/\<proxy_name\>/rate_max | max number of new sessions per second
-/intel/haproxy/stat/\<service_name\>/\<proxy_name\>/check_status | status of last health check
-/intel/haproxy/stat/\<service_name\>/\<proxy_name\>/check_code | layer5-7 code, if available
-/intel/haproxy/stat/\<service_name\>/\<proxy_name\>/check_duration | time in ms took to finish last health check
-/intel/haproxy/stat/\<service_name\>/\<proxy_name\>/hrsp_1xx | http responses with 1xx code
-/intel/haproxy/stat/\<service_name\>/\<proxy_name\>/hrsp_2xx | http responses with 2xx code
-/intel/haproxy/stat/\<service_name\>/\<proxy_name\>/hrsp_3xx | http responses with 3xx code
-/intel/haproxy/stat/\<service_name\>/\<proxy_name\>/hrsp_4xx | http responses with 4xx code
-/intel/haproxy/stat/\<service_name\>/\<proxy_name\>/hrsp_5xx | http responses with 5xx code
-/intel/haproxy/stat/\<service_name\>/\<proxy_name\>/hrsp_other | http responses with other codes (protocol error)
-/intel/haproxy/stat/\<service_name\>/\<proxy_name\>/hanafail | failed health checks details
-/intel/haproxy/stat/\<service_name\>/\<proxy_name\>/req_rate | HTTP requests per second over last elapsed second
-/intel/haproxy/stat/\<service_name\>/\<proxy_name\>/req_rate_max | max number of HTTP requests per second observed
-/intel/haproxy/stat/\<service_name\>/\<proxy_name\>/req_tot | total number of HTTP requests received
-/intel/haproxy/stat/\<service_name\>/\<proxy_name\>/cli_abrt | number of data transfers aborted by the client
-/intel/haproxy/stat/\<service_name\>/\<proxy_name\>/srv_abrt | number of data transfers aborted by the server (inc. in eresp)
-/intel/haproxy/stat/\<service_name\>/\<proxy_name\>/comp_in | number of HTTP response bytes fed to the compressor
-/intel/haproxy/stat/\<service_name\>/\<proxy_name\>/comp_out | number of HTTP response bytes emitted by the compressor
-/intel/haproxy/stat/\<service_name\>/\<proxy_name\>/comp_byp | number of bytes that bypassed the HTTP compressor (CPU/BW limit)
-/intel/haproxy/stat/\<service_name\>/\<proxy_name\>/comp_rsp | number of HTTP responses that were compressed
-/intel/haproxy/stat/\<service_name\>/\<proxy_name\>/lastsess | number of seconds since last session assigned to server/backend
-/intel/haproxy/stat/\<service_name\>/\<proxy_name\>/last_chk | last health check contents or textual error
-/intel/haproxy/stat/\<service_name\>/\<proxy_name\>/last_agt | last agent check contents or textual error
-/intel/haproxy/stat/\<service_name\>/\<proxy_name\>/qtime | the average queue time in ms over the 1024 last requests
-/intel/haproxy/stat/\<service_name\>/\<proxy_name\>/ctime | the average connect time in ms over the 1024 last requests
-/intel/haproxy/stat/\<service_name\>/\<proxy_name\>/rtime | the average response time in ms over the 1024 last requests (0 for TCP)
-/intel/haproxy/stat/\<service_name\>/\<proxy_name\>/ttime | the average total session time in ms over the 1024 last requests
+Namespace | Data Type | Description
+----------|-----------|-----------------------
+/intel/haproxy/info/CompressBpsIn | int64 |
+/intel/haproxy/info/CompressBpsOut | int64 |
+/intel/haproxy/info/CompressBpsRateLim | int64 |
+/intel/haproxy/info/ConnRate | int64 |
+/intel/haproxy/info/ConnRateLimit | int64 |
+/intel/haproxy/info/CumConns | int64 |
+/intel/haproxy/info/CumReq | int64 |
+/intel/haproxy/info/CumSslConns | int64 |
+/intel/haproxy/info/CurrConns | int64 |
+/intel/haproxy/info/CurrSslConns | int64 |
+/intel/haproxy/info/Hard_maxconn | int64 |
+/intel/haproxy/info/Idle_pct | int64 |
+/intel/haproxy/info/MaxConnRate | int64 |
+/intel/haproxy/info/MaxSessRate | int64 |
+/intel/haproxy/info/MaxSslConns | int64 |
+/intel/haproxy/info/MaxSslRate | int64 |
+/intel/haproxy/info/MaxZlibMemUsage | int64 |
+/intel/haproxy/info/Maxconn |  int64
+/intel/haproxy/info/Maxpipes | int64 |
+/intel/haproxy/info/Maxsock | int64 |
+/intel/haproxy/info/Memmax_MB | int64 |
+/intel/haproxy/info/Name | string |
+/intel/haproxy/info/Nbproc | int64 |
+/intel/haproxy/info/Pid | int64 |
+/intel/haproxy/info/PipesFree | int64 |
+/intel/haproxy/info/PipesUsed | int64 |
+/intel/haproxy/info/Process_num | int64 |
+/intel/haproxy/info/Release_date | string |
+/intel/haproxy/info/Run_queue | int64 |
+/intel/haproxy/info/SessRate | int64 |
+/intel/haproxy/info/SessRateLimit | int64 |
+/intel/haproxy/info/SslBackendKeyRate | int64 |
+/intel/haproxy/info/SslBackendMaxKeyRate | int64 |
+/intel/haproxy/info/SslCacheLookups | int64 |
+/intel/haproxy/info/SslCacheMisses | int64 |
+/intel/haproxy/info/SslFrontendKeyRate | int64 |
+/intel/haproxy/info/SslFrontendMaxKeyRate | int64 |
+/intel/haproxy/info/SslFrontendSessionReuse_pct | int64 |
+/intel/haproxy/info/SslRate | int64 |
+/intel/haproxy/info/SslRateLimit | int64 |
+/intel/haproxy/info/Tasks | int64 |
+/intel/haproxy/info/Ulimit-n | int64 |
+/intel/haproxy/info/Uptime | string |
+/intel/haproxy/info/Uptime_sec | int64 |
+/intel/haproxy/info/Version | string |
+/intel/haproxy/info/ZlibMemUsage | int64 |
+/intel/haproxy/info/description | string |
+/intel/haproxy/info/node | string |
+/intel/haproxy/stat/\<service_name\>/\<proxy_name\>/qcur | int64 | current queued requests. For the backend this reports the number queued without a server assigned.
+/intel/haproxy/stat/\<service_name\>/\<proxy_name\>/qmax | int64 | max value of qcur
+/intel/haproxy/stat/\<service_name\>/\<proxy_name\>/scur | int64 |current sessions
+/intel/haproxy/stat/\<service_name\>/\<proxy_name\>/smax | int64 | max sessions
+/intel/haproxy/stat/\<service_name\>/\<proxy_name\>/slim |  int64 | configured session limit
+/intel/haproxy/stat/\<service_name\>/\<proxy_name\>/stot | int64 |cumulative number of connections
+/intel/haproxy/stat/\<service_name\>/\<proxy_name\>/bin | int64| bytes in
+/intel/haproxy/stat/\<service_name\>/\<proxy_name\>/bout | int64 | bytes out
+/intel/haproxy/stat/\<service_name\>/\<proxy_name\>/dreq | int64 | requests denied because of security concerns.
+/intel/haproxy/stat/\<service_name\>/\<proxy_name\>/dresp | int64 | responses denied because of security concerns.
+/intel/haproxy/stat/\<service_name\>/\<proxy_name\>/ereq | int64 | request errors
+/intel/haproxy/stat/\<service_name\>/\<proxy_name\>/econ | int64 | number of requests that encountered an error trying to  connect to a backend server
+/intel/haproxy/stat/\<service_name\>/\<proxy_name\>/eresp | int64| response errors
+/intel/haproxy/stat/\<service_name\>/\<proxy_name\>/wretr | int64 | number of times a connection to a server was retried.
+/intel/haproxy/stat/\<service_name\>/\<proxy_name\>/wredis | int64 | number of times a request was redispatched to another  server
+/intel/haproxy/stat/\<service_name\>/\<proxy_name\>/status | string | status (UP/DOWN/NOLB/MAINT/MAINT(via)...)
+/intel/haproxy/stat/\<service_name\>/\<proxy_name\>/weight | int64 | total weight (backend), server weight (server)
+/intel/haproxy/stat/\<service_name\>/\<proxy_name\>/act | int64 | number of active servers (backend), server is active (server)
+/intel/haproxy/stat/\<service_name\>/\<proxy_name\>/bck | int64 | number of backup servers (backend), server is backup (server)
+/intel/haproxy/stat/\<service_name\>/\<proxy_name\>/chkfail | int64 |number of failed checks
+/intel/haproxy/stat/\<service_name\>/\<proxy_name\>/chkdown | int64 | number of UP->DOWN transitions
+/intel/haproxy/stat/\<service_name\>/\<proxy_name\>/lastchg | int64 |number of seconds since the last UP<->DOWN transition
+/intel/haproxy/stat/\<service_name\>/\<proxy_name\>/downtime |  int64 | total downtime (in seconds)
+/intel/haproxy/stat/\<service_name\>/\<proxy_name\>/qlimit | int64 | configured maxqueue for the server, or nothing in the  value is 0 (default, meaning no limit)
+/intel/haproxy/stat/\<service_name\>/\<proxy_name\>/pid | int64 | process id (0 for first instance, 1 for second, ...)
+/intel/haproxy/stat/\<service_name\>/\<proxy_name\>/iid | in64 | unique proxy id
+/intel/haproxy/stat/\<service_name\>/\<proxy_name\>/sid | int64 | server id (unique inside a proxy)
+/intel/haproxy/stat/\<service_name\>/\<proxy_name\>/throttle | int64 | current throttle percentage for the server, when slowstart is active, or no value if not in slowstart.
+/intel/haproxy/stat/\<service_name\>/\<proxy_name\>/lbtot | int64 | total number of times a server was selected, either for new sessions, or when re-dispatching
+/intel/haproxy/stat/\<service_name\>/\<proxy_name\>/tracked | int64 | id of proxy/server if tracking is enabled.
+/intel/haproxy/stat/\<service_name\>/\<proxy_name\>/type | int64 | (0=frontend, 1=backend, 2=server, 3=socket/listener)
+/intel/haproxy/stat/\<service_name\>/\<proxy_name\>/rate | int64 | number of sessions per second over last elapsed second
+/intel/haproxy/stat/\<service_name\>/\<proxy_name\>/rate_lim | int64 | configured limit on new sessions per second
+/intel/haproxy/stat/\<service_name\>/\<proxy_name\>/rate_max | int64 | max number of new sessions per second
+/intel/haproxy/stat/\<service_name\>/\<proxy_name\>/check_status | string | status of last health check
+/intel/haproxy/stat/\<service_name\>/\<proxy_name\>/check_code | int64 | layer5-7 code, if available
+/intel/haproxy/stat/\<service_name\>/\<proxy_name\>/check_duration | int64 | time in ms took to finish last health check
+/intel/haproxy/stat/\<service_name\>/\<proxy_name\>/hrsp_1xx | int64 | http responses with 1xx code
+/intel/haproxy/stat/\<service_name\>/\<proxy_name\>/hrsp_2xx | int64 | http responses with 2xx code
+/intel/haproxy/stat/\<service_name\>/\<proxy_name\>/hrsp_3xx | int64 | http responses with 3xx code
+/intel/haproxy/stat/\<service_name\>/\<proxy_name\>/hrsp_4xx | int64 | http responses with 4xx code
+/intel/haproxy/stat/\<service_name\>/\<proxy_name\>/hrsp_5xx | int64 | http responses with 5xx code
+/intel/haproxy/stat/\<service_name\>/\<proxy_name\>/hrsp_other | int64 | http responses with other codes (protocol error)
+/intel/haproxy/stat/\<service_name\>/\<proxy_name\>/hanafail | string |failed health checks details
+/intel/haproxy/stat/\<service_name\>/\<proxy_name\>/req_rate | int64 | HTTP requests per second over last elapsed second
+/intel/haproxy/stat/\<service_name\>/\<proxy_name\>/req_rate_max | int64 | max number of HTTP requests per second observed
+/intel/haproxy/stat/\<service_name\>/\<proxy_name\>/req_tot | int64 | total number of HTTP requests received
+/intel/haproxy/stat/\<service_name\>/\<proxy_name\>/cli_abrt | int64 | number of data transfers aborted by the client
+/intel/haproxy/stat/\<service_name\>/\<proxy_name\>/srv_abrt | int64| number of data transfers aborted by the server (inc. in eresp)
+/intel/haproxy/stat/\<service_name\>/\<proxy_name\>/comp_in | int64 | number of HTTP response bytes fed to the compressor
+/intel/haproxy/stat/\<service_name\>/\<proxy_name\>/comp_out | int64 | number of HTTP response bytes emitted by the compressor
+/intel/haproxy/stat/\<service_name\>/\<proxy_name\>/comp_byp | int64 | number of bytes that bypassed the HTTP compressor (CPU/BW limit)
+/intel/haproxy/stat/\<service_name\>/\<proxy_name\>/comp_rsp | int64 | number of HTTP responses that were compressed
+/intel/haproxy/stat/\<service_name\>/\<proxy_name\>/lastsess | int64 | number of seconds since last session assigned to server/backend
+/intel/haproxy/stat/\<service_name\>/\<proxy_name\>/last_chk | string | last health check contents or textual error
+/intel/haproxy/stat/\<service_name\>/\<proxy_name\>/last_agt | string | last agent check contents or textual error
+/intel/haproxy/stat/\<service_name\>/\<proxy_name\>/qtime | int64 | the average queue time in ms over the 1024 last requests
+/intel/haproxy/stat/\<service_name\>/\<proxy_name\>/ctime | int64 | the average connect time in ms over the 1024 last requests
+/intel/haproxy/stat/\<service_name\>/\<proxy_name\>/rtime | int64 | the average response time in ms over the 1024 last requests (0 for TCP)
+/intel/haproxy/stat/\<service_name\>/\<proxy_name\>/ttime | int64 | the average total session time in ms over the 1024 last requests
 
 **Important Note: Above metric list is a full list. Actual metrics are dependant on HAProxy service configuration.** 
 

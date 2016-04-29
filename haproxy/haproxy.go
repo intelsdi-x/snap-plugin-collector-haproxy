@@ -32,10 +32,13 @@ import (
 	"time"
 
 	log "github.com/Sirupsen/logrus"
-	"github.com/intelsdi-x/snap-plugin-utilities/config"
+
 	"github.com/intelsdi-x/snap/control/plugin"
 	"github.com/intelsdi-x/snap/control/plugin/cpolicy"
+	"github.com/intelsdi-x/snap/core"
 	"github.com/intelsdi-x/snap/core/serror"
+
+	"github.com/intelsdi-x/snap-plugin-utilities/config"
 )
 
 const (
@@ -60,8 +63,8 @@ var (
 
 // GetMetricTypes returns list of available metric types
 // It returns error in case retrieval was not successful
-func (ha *haproxyPlugin) GetMetricTypes(cfg plugin.PluginConfigType) ([]plugin.PluginMetricType, error) {
-	metricTypes := []plugin.PluginMetricType{}
+func (ha *haproxyPlugin) GetMetricTypes(cfg plugin.ConfigType) ([]plugin.MetricType, error) {
+	metricTypes := []plugin.MetricType{}
 	sckt, err := config.GetConfigItem(cfg, "socket")
 	if err != nil {
 		return nil, err
@@ -80,8 +83,7 @@ func (ha *haproxyPlugin) GetMetricTypes(cfg plugin.PluginConfigType) ([]plugin.P
 				return nil, err
 			}
 			for stat := range stats {
-				namespace := []string{VENDOR, PLUGIN, ncinfo, stat}
-				metricTypes = append(metricTypes, plugin.PluginMetricType{Namespace_: namespace})
+				metricTypes = append(metricTypes, plugin.MetricType{Namespace_: core.NewNamespace(VENDOR, PLUGIN, ncinfo, stat)})
 			}
 		case ncstat:
 			all, err := parseStats(data, ncstatsep)
@@ -104,8 +106,7 @@ func (ha *haproxyPlugin) GetMetricTypes(cfg plugin.PluginConfigType) ([]plugin.P
 				delete(stats, "pxname")
 
 				for stat := range stats {
-					namespace := []string{VENDOR, PLUGIN, ncstat, svname, pxname, stat}
-					metricTypes = append(metricTypes, plugin.PluginMetricType{Namespace_: namespace})
+					metricTypes = append(metricTypes, plugin.MetricType{Namespace_: core.NewNamespace(VENDOR, PLUGIN, ncstat, svname, pxname, stat)})
 				}
 			}
 		}
@@ -116,8 +117,8 @@ func (ha *haproxyPlugin) GetMetricTypes(cfg plugin.PluginConfigType) ([]plugin.P
 
 // CollectMetrics returns list of requested metric values
 // It returns error in case retrieval was not successful
-func (ha *haproxyPlugin) CollectMetrics(metricTypes []plugin.PluginMetricType) ([]plugin.PluginMetricType, error) {
-	metrics := []plugin.PluginMetricType{}
+func (ha *haproxyPlugin) CollectMetrics(metricTypes []plugin.MetricType) ([]plugin.MetricType, error) {
+	metrics := []plugin.MetricType{}
 	sckt, err := config.GetConfigItem(metricTypes[0], "socket")
 	if err != nil {
 		return nil, err
@@ -138,31 +139,38 @@ func (ha *haproxyPlugin) CollectMetrics(metricTypes []plugin.PluginMetricType) (
 		if len(namespace) < 4 {
 			return nil, fmt.Errorf("Namespace length is incorrect %d", len(namespace))
 		}
-		mode := namespace[2]
+
+		tags := metricType.Tags()
+		if tags == nil {
+			tags = map[string]string{}
+		}
+		tags["hostname"] = ha.host
+
+		mode := namespace[2].Value
 		switch mode {
 		case ncinfo:
 			stats, err := parseInfo(ncInfoData, ncinfosep)
 			if err != nil {
 				return nil, err
 			}
-			stat := namespace[3]
+			stat := namespace[3].Value
 			val, ok := stats[stat]
 			if !ok {
-				return nil, fmt.Errorf("Requested metric is not found {%s}", strings.Join(namespace, "/"))
+				return nil, fmt.Errorf("Requested metric is not found {%s}", namespace.String())
 			}
 
-			valConverted := setMetricType(namespace, val, ncinfoStringMetrics)
-			metrics = append(metrics, plugin.PluginMetricType{
-				Namespace_: []string{VENDOR, PLUGIN, ncinfo, stat},
+			valConverted := setMetricType(namespace.Strings(), val, ncinfoStringMetrics)
+			metrics = append(metrics, plugin.MetricType{
+				Namespace_: core.NewNamespace(VENDOR, PLUGIN, ncinfo, stat),
 				Data_:      valConverted,
 				Version_:   VERSION,
 				Timestamp_: time.Now(),
-				Source_:    ha.host,
+				Tags_:      tags,
 			})
 
 		case ncstat:
-			svname := namespace[3]
-			pxname := namespace[4]
+			svname := namespace[3].Value
+			pxname := namespace[4].Value
 
 			all, err := parseStats(ncStatData, ncstatsep)
 			if err != nil {
@@ -170,18 +178,18 @@ func (ha *haproxyPlugin) CollectMetrics(metricTypes []plugin.PluginMetricType) (
 			}
 
 			for _, stats := range all {
-				stat := namespace[5]
+				stat := namespace[5].Value
 				sv, _ := stats["svname"]
 				px, _ := stats["pxname"]
 				val, ok := stats[stat]
 				if sv == svname && px == pxname && ok {
-					valConverted := setMetricType(namespace, val, ncstatStringMetrics)
-					metrics = append(metrics, plugin.PluginMetricType{
+					valConverted := setMetricType(namespace.Strings(), val, ncstatStringMetrics)
+					metrics = append(metrics, plugin.MetricType{
 						Namespace_: namespace,
 						Data_:      valConverted,
 						Version_:   VERSION,
 						Timestamp_: time.Now(),
-						Source_:    ha.host,
+						Tags_:      tags,
 					})
 					break
 				}

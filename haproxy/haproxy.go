@@ -47,7 +47,7 @@ const (
 	// PLUGIN name namespace part
 	PLUGIN = "haproxy"
 	// VERSION of haproxy plugin
-	VERSION = 2
+	VERSION = 3
 
 	ncinfo    = "info"
 	ncstat    = "stat"

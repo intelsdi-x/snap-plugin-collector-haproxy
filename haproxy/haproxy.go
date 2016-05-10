@@ -25,7 +25,6 @@ import (
 	"bufio"
 	"fmt"
 	"io"
-	"os"
 	"os/exec"
 	"strconv"
 	"strings"
@@ -140,12 +139,6 @@ func (ha *haproxyPlugin) CollectMetrics(metricTypes []plugin.MetricType) ([]plug
 			return nil, fmt.Errorf("Namespace length is incorrect %d", len(namespace))
 		}
 
-		tags := metricType.Tags()
-		if tags == nil {
-			tags = map[string]string{}
-		}
-		tags["hostname"] = ha.host
-
 		mode := namespace[2].Value
 		switch mode {
 		case ncinfo:
@@ -163,9 +156,7 @@ func (ha *haproxyPlugin) CollectMetrics(metricTypes []plugin.MetricType) ([]plug
 			metrics = append(metrics, plugin.MetricType{
 				Namespace_: core.NewNamespace(VENDOR, PLUGIN, ncinfo, stat),
 				Data_:      valConverted,
-				Version_:   VERSION,
 				Timestamp_: time.Now(),
-				Tags_:      tags,
 			})
 
 		case ncstat:
@@ -187,9 +178,7 @@ func (ha *haproxyPlugin) CollectMetrics(metricTypes []plugin.MetricType) ([]plug
 					metrics = append(metrics, plugin.MetricType{
 						Namespace_: namespace,
 						Data_:      valConverted,
-						Version_:   VERSION,
 						Timestamp_: time.Now(),
-						Tags_:      tags,
 					})
 					break
 				}
@@ -207,18 +196,10 @@ func (ha *haproxyPlugin) GetConfigPolicy() (*cpolicy.ConfigPolicy, error) {
 
 // New creates instance of haproxy plugin
 func New() *haproxyPlugin {
-	host, err := os.Hostname()
-	if err != nil {
-		host = "localhost"
-	}
-
-	ha := &haproxyPlugin{host: host, socket: &uSocket{}}
-
-	return ha
+	return &haproxyPlugin{socket: &uSocket{}}
 }
 
 type haproxyPlugin struct {
-	host   string
 	socket socketer
 }
 

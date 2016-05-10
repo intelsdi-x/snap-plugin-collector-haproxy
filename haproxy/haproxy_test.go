@@ -66,7 +66,7 @@ func (hps *HaproxyPluginSuite) SetupSuite() {
 
 func (hps *HaproxyPluginSuite) TestGetMetricTypes() {
 	Convey("Given haproxy plugin is initialized", hps.T(), func() {
-		haprx := haproxyPlugin{host: "localhost", socket: hps.MockSocket}
+		haprx := haproxyPlugin{socket: hps.MockSocket}
 
 		Convey("When one wants to get list of available meterics", func() {
 			mts, err := haprx.GetMetricTypes(hps.cfg)
@@ -102,7 +102,7 @@ func (hps *HaproxyPluginSuite) TestGetMetricTypes() {
 
 func (hps *HaproxyPluginSuite) TestCollectMetrics() {
 	Convey("Given haproxy plugin is initialized", hps.T(), func() {
-		haprx := haproxyPlugin{host: "localhost", socket: hps.MockSocket}
+		haprx := haproxyPlugin{socket: hps.MockSocket}
 
 		Convey("When one wants to get values for requested meterics", func() {
 			mts := []plugin.MetricType{

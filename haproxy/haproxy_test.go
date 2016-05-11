@@ -28,13 +28,14 @@ import (
 	"github.com/stretchr/testify/suite"
 
 	"github.com/intelsdi-x/snap/control/plugin"
+	"github.com/intelsdi-x/snap/core"
 	"github.com/intelsdi-x/snap/core/cdata"
 	"github.com/intelsdi-x/snap/core/ctypes"
 )
 
 type HaproxyPluginSuite struct {
 	suite.Suite
-	cfg                    plugin.PluginConfigType
+	cfg                    plugin.ConfigType
 	dataNode               *cdata.ConfigDataNode
 	ncInfoData, ncStatData []string
 	MockSocket             *MockSocket
@@ -56,7 +57,7 @@ func (hps *HaproxyPluginSuite) SetupSuite() {
 
 	hps.dataNode = cdata.NewNode()
 	hps.dataNode.AddItem("socket", ctypes.ConfigValueStr{Value: "fake.haproxy.sock"})
-	hps.cfg = plugin.PluginConfigType{ConfigDataNode: hps.dataNode}
+	hps.cfg = plugin.ConfigType{ConfigDataNode: hps.dataNode}
 
 	hps.MockSocket = &MockSocket{}
 	hps.MockSocket.On("Read", mock.AnythingOfType("string"), ncinfo).Return(hps.ncInfoData, nil)
@@ -65,7 +66,7 @@ func (hps *HaproxyPluginSuite) SetupSuite() {
 
 func (hps *HaproxyPluginSuite) TestGetMetricTypes() {
 	Convey("Given haproxy plugin is initialized", hps.T(), func() {
-		haprx := haproxyPlugin{host: "localhost", socket: hps.MockSocket}
+		haprx := haproxyPlugin{socket: hps.MockSocket}
 
 		Convey("When one wants to get list of available meterics", func() {
 			mts, err := haprx.GetMetricTypes(hps.cfg)
@@ -79,21 +80,21 @@ func (hps *HaproxyPluginSuite) TestGetMetricTypes() {
 
 				namespace := []string{}
 				for _, m := range mts {
-					namespace = append(namespace, strings.Join(m.Namespace(), "/"))
+					namespace = append(namespace, m.Namespace().String())
 				}
 
-				So(namespace, ShouldContain, "intel/haproxy/stat/FRONTEND/LB/qcur")
-				So(namespace, ShouldContain, "intel/haproxy/stat/FRONTEND/LB/qmax")
-				So(namespace, ShouldContain, "intel/haproxy/stat/FRONTEND/LB/rtime")
-				So(namespace, ShouldContain, "intel/haproxy/stat/FRONTEND/LB/ttime")
-				So(namespace, ShouldContain, "intel/haproxy/stat/Server01/LB/qcur")
-				So(namespace, ShouldContain, "intel/haproxy/stat/Server01/LB/qmax")
-				So(namespace, ShouldContain, "intel/haproxy/stat/Server01/LB/rtime")
-				So(namespace, ShouldContain, "intel/haproxy/stat/Server01/LB/ttime")
-				So(namespace, ShouldContain, "intel/haproxy/info/Maxsock")
-				So(namespace, ShouldContain, "intel/haproxy/info/Tasks")
-				So(namespace, ShouldContain, "intel/haproxy/info/CurrConns")
-				So(namespace, ShouldContain, "intel/haproxy/info/CumReq")
+				So(namespace, ShouldContain, "/intel/haproxy/stat/FRONTEND/LB/qcur")
+				So(namespace, ShouldContain, "/intel/haproxy/stat/FRONTEND/LB/qmax")
+				So(namespace, ShouldContain, "/intel/haproxy/stat/FRONTEND/LB/rtime")
+				So(namespace, ShouldContain, "/intel/haproxy/stat/FRONTEND/LB/ttime")
+				So(namespace, ShouldContain, "/intel/haproxy/stat/Server01/LB/qcur")
+				So(namespace, ShouldContain, "/intel/haproxy/stat/Server01/LB/qmax")
+				So(namespace, ShouldContain, "/intel/haproxy/stat/Server01/LB/rtime")
+				So(namespace, ShouldContain, "/intel/haproxy/stat/Server01/LB/ttime")
+				So(namespace, ShouldContain, "/intel/haproxy/info/Maxsock")
+				So(namespace, ShouldContain, "/intel/haproxy/info/Tasks")
+				So(namespace, ShouldContain, "/intel/haproxy/info/CurrConns")
+				So(namespace, ShouldContain, "/intel/haproxy/info/CumReq")
 			})
 		})
 	})
@@ -101,32 +102,32 @@ func (hps *HaproxyPluginSuite) TestGetMetricTypes() {
 
 func (hps *HaproxyPluginSuite) TestCollectMetrics() {
 	Convey("Given haproxy plugin is initialized", hps.T(), func() {
-		haprx := haproxyPlugin{host: "localhost", socket: hps.MockSocket}
+		haprx := haproxyPlugin{socket: hps.MockSocket}
 
 		Convey("When one wants to get values for requested meterics", func() {
-			mts := []plugin.PluginMetricType{
-				plugin.PluginMetricType{
-					Namespace_: []string{VENDOR, PLUGIN, ncstat, "FRONTEND", "LB", "slim"},
+			mts := []plugin.MetricType{
+				plugin.MetricType{
+					Namespace_: core.NewNamespace(VENDOR, PLUGIN, ncstat, "FRONTEND", "LB", "slim"),
 					Config_:    hps.dataNode,
 				},
-				plugin.PluginMetricType{
-					Namespace_: []string{VENDOR, PLUGIN, ncstat, "FRONTEND", "LB", "status"},
+				plugin.MetricType{
+					Namespace_: core.NewNamespace(VENDOR, PLUGIN, ncstat, "FRONTEND", "LB", "status"),
 					Config_:    hps.dataNode,
 				},
-				plugin.PluginMetricType{
-					Namespace_: []string{VENDOR, PLUGIN, ncstat, "Server01", "LB", "lastchg"},
+				plugin.MetricType{
+					Namespace_: core.NewNamespace(VENDOR, PLUGIN, ncstat, "Server01", "LB", "lastchg"),
 					Config_:    hps.dataNode,
 				},
-				plugin.PluginMetricType{
-					Namespace_: []string{VENDOR, PLUGIN, ncstat, "Server01", "LB", "ttime"},
+				plugin.MetricType{
+					Namespace_: core.NewNamespace(VENDOR, PLUGIN, ncstat, "Server01", "LB", "ttime"),
 					Config_:    hps.dataNode,
 				},
-				plugin.PluginMetricType{
-					Namespace_: []string{VENDOR, PLUGIN, ncinfo, "Maxsock"},
+				plugin.MetricType{
+					Namespace_: core.NewNamespace(VENDOR, PLUGIN, ncinfo, "Maxsock"),
 					Config_:    hps.dataNode,
 				},
-				plugin.PluginMetricType{
-					Namespace_: []string{VENDOR, PLUGIN, ncinfo, "CurrConns"},
+				plugin.MetricType{
+					Namespace_: core.NewNamespace(VENDOR, PLUGIN, ncinfo, "CurrConns"),
 					Config_:    hps.dataNode,
 				},
 			}
@@ -142,7 +143,7 @@ func (hps *HaproxyPluginSuite) TestCollectMetrics() {
 
 				stats := map[string]interface{}{}
 				for _, m := range metrics {
-					stat := strings.Join(m.Namespace()[2:], "/")
+					stat := strings.Join(m.Namespace().Strings()[2:], "/")
 					stats[stat] = m.Data()
 				}
 

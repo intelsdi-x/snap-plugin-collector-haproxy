@@ -24,8 +24,7 @@ package haproxy
 import (
 	"bufio"
 	"fmt"
-	"io"
-	"os/exec"
+	"net"
 	"strconv"
 	"strings"
 	"time"
@@ -46,7 +45,7 @@ const (
 	// PLUGIN name namespace part
 	PLUGIN = "haproxy"
 	// VERSION of haproxy plugin
-	VERSION = 3
+	VERSION = 4
 
 	ncinfo    = "info"
 	ncstat    = "stat"
@@ -214,51 +213,35 @@ type uSocket struct{}
 // mode can be "info" or "stat" depending on type of statistics needed
 // It returns list of coma-separated entries or error in case of failure
 func (sock *uSocket) Read(socketName string, mode string) ([]string, error) {
-	var err error
-	var reader io.ReadCloser
-	cmd1 := exec.Command("echo", "show", mode)
-	cmd2 := exec.Command("nc", "-U", socketName)
-
-	cmd2.Stdin, err = cmd1.StdoutPipe()
-
+	c, err := net.Dial("unix", socketName)
+	defer c.Close()
 	if err != nil {
 		return nil, err
 	}
 
-	reader, err = cmd2.StdoutPipe()
+	scanner := bufio.NewScanner(c)
 
+	// send the command to the socket
+	_, err = c.Write([]byte(fmt.Sprintf("show %s\n", mode)))
 	if err != nil {
-		return nil, err
-	}
-
-	scanner := bufio.NewScanner(reader)
-
-	if err = cmd1.Start(); err != nil {
-		return nil, err
-	}
-
-	if err = cmd2.Start(); err != nil {
 		return nil, err
 	}
 
 	done := make(chan bool)
 	csv := []string{}
 
+	// read the response from the command just issued
 	go func() {
 		for scanner.Scan() {
 			csv = append(csv, scanner.Text())
+		}
+		if err := scanner.Err(); err != nil {
+			log.Errorf("Error reading from %v: %v", socketName, err.Error())
 		}
 		done <- true
 	}()
 
 	<-done
-
-	if err = cmd1.Wait(); err != nil {
-		return nil, err
-	}
-	if err = cmd2.Wait(); err != nil {
-		return nil, err
-	}
 
 	return csv, nil
 }

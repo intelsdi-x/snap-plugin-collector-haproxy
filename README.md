@@ -65,7 +65,7 @@ Configuration Manual](http://www.haproxy.org/download/1.6/doc/configuration.txt)
 See example Global Config in [example/cfg/] (https://github.com/intelsdi-x/snap-plugin-collector-haproxy/blob/master/example/cfg/).
 
 ### Examples
-Example running haproxy, passthru processor, and writing data to a file.
+Example running haproxy and writing data to a file.
 
 Make sure that your `$SNAP_PATH` is set, if not:
 ```
@@ -91,75 +91,65 @@ As a root launch HAProxy with configuration:
 ```
 $ haproxy -f config.cfg
 ```
-Create Global Config, see example in [example/cfg/] (https://github.com/intelsdi-x/snap-plugin-collector-haproxy/blob/master/example/cfg/).
+Create Global Config, see example in [examples/cfg/] (examples/cfg/).
 
 In one terminal window, open the snap daemon (in this case with logging set to 1,  trust disabled and global configuration saved in cfg.json):
 ```
-$ $SNAP_PATH/bin/snapd -l 1 -t 0 --config cfg.json
+$ snapd -l 1 -t 0 --config examples/cfg/snap-global-cfg.json
 ```
-In another terminal window:
+In another terminal window in snap-plugin-collector-haproxy directory:
 Load haproxy plugin:
 ```
-$ $SNAP_PATH/bin/snapctl plugin load snap-plugin-collector-haproxy
+$ snapctl plugin load build/rootfs/snap-plugin-collector-haproxy
 ```
 See available metrics for your system
 ```
-$ $SNAP_PATH/bin/snapctl metric list
+$ snapctl metric list
 ```
-Create a task manifest file (exemplary file in [example/task/] (https://github.com/intelsdi-x/snap-plugin-collector-haproxy/blob/master/example/task/)):
-```json
+Create a task manifest file (exemplary file in [examples/tasks/] (examples/tasks/)):
+```
 {
-    "version": 1,
-    "schedule": {
-        "type": "simple",
-        "interval": "1s"
-    },
-    "workflow": {
-        "collect": {
-            "metrics": {
-                "/intel/linux/haproxy/info/CurrConns": {},
-                "/intel/linux/haproxy/info/Run_queue": {}, 
-                "/intel/linux/haproxy/stat/<service_name>/<proxy_name>/qlimit": {},
-                "/intel/linux/haproxy/stat/<service_name>/<proxy_name>/chkdown": {} 
-            },
-            "config": {
-                "/intel/mock": {
-                    "password": "secret",
-                    "user": "root"
-                }
-            },
-            "process": [
-                {
-                    "plugin_name": "passthru",
-                    "process": null,
-                    "publish": [
-                        {                         
-                            "plugin_name": "file",
-                            "config": {
-                                "file": "/tmp/published_haproxy"
-                            }
-                        }
-                    ],
-                    "config": null
-                }
-            ],
-            "publish": null
+  "version": 1,
+  "schedule": {
+    "type": "simple",
+    "interval": "1s"
+  },
+  "workflow": {
+    "collect": {
+      "metrics": {
+        "/intel/haproxy/*": {}
+      },
+      "config": null,
+      "publish": [
+        {
+          "plugin_name": "file",
+          "config": {
+            "file": "/tmp/published_haproxy.log"
+          }
         }
+      ]
     }
+  }
 }
 ```
-Load passthru plugin for processing:
+
+Get mock file plugin for publishing, appropriate for Linux or Darwin:
 ```
-$ $SNAP_PATH/bin/snapctl plugin load build/plugin/snap-processor-passthru
+wget  http://snap.ci.snap-telemetry.io/plugins/snap-plugin-publisher-file/latest/linux/x86_64/snap-plugin-publisher-file
+```
+or 
+```
+wget  http://snap.ci.snap-telemetry.io/plugins/snap-plugin-publisher-file/latest/darwin/x86_64/snap-plugin-publisher-file
 ```
 
-Load file plugin for publishing:
+Load mock file plugin for publishing:
 ```
-$ $SNAP_PATH/bin/snapctl plugin load build/plugin/snap-publisher-file
+$ snapctl plugin load snap-plugin-publisher-file
 ```
 Create a task:
 ```
-$ $SNAP_PATH/bin/snapctl task create -t examples/tasks/haproxy-file.json
+$ snapctl task create -t examples/tasks/haproxy-file.json
+
 Using task manifest to create task
 Task created
 ID: 02dd7ff4-8106-47e9-8b86-70067cd0a850
@@ -168,7 +158,8 @@ State: Running
 ```
 Stop previously created task:
 ```
-$ $SNAP_PATH/bin/snapctl task stop 02dd7ff4-8106-47e9-8b86-70067cd0a850
+$ snapctl task stop 02dd7ff4-8106-47e9-8b86-70067cd0a850
+
 Task stopped:
 ID: 02dd7ff4-8106-47e9-8b86-70067cd0a850
 ```

@@ -1,0 +1,15 @@
+{
+  "control": {
+    "plugins": {
+      "collector": {
+        "haproxy": {
+          "all": {
+            "socket": "/var/run/haproxy.sock"
+          }
+        }
+      },
+      "publisher": {},
+      "processor": {}
+    }
+  }
+}

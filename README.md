@@ -135,11 +135,11 @@ Create a task manifest file (exemplary file in [examples/tasks/] (examples/tasks
 
 Get mock file plugin for publishing, appropriate for Linux or Darwin:
 ```
-wget  http://snap.ci.snap-telemetry.io/plugins/snap-plugin-publisher-file/latest/linux/x86_64/snap-plugin-publisher-file
+wget  http://snap.ci.snap-telemetry.io/plugins/snap-plugin-publisher-file/latest_build/linux/x86_64/snap-plugin-publisher-file
 ```
 or 
 ```
-wget  http://snap.ci.snap-telemetry.io/plugins/snap-plugin-publisher-file/latest/darwin/x86_64/snap-plugin-publisher-file
+wget  http://snap.ci.snap-telemetry.io/plugins/snap-plugin-publisher-file/latest_build/darwin/x86_64/snap-plugin-publisher-file
 ```
 
 Load mock file plugin for publishing:

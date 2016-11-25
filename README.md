@@ -30,7 +30,7 @@ All OSs currently supported by Snap:
 ### Installation
 #### Download the plugin binary:
 
-You can get the pre-built binaries for your OS and architecture from the plugin's [GitHub Releases](https://github.com/intelsdi-x/snap-plugin-collector-haproxy/releases) page. Download the plugin from the latest release and load it into `snapd` (`/opt/snap/plugins` is the default location for Snap packages).
+You can get the pre-built binaries for your OS and architecture from the plugin's [GitHub Releases](https://github.com/intelsdi-x/snap-plugin-collector-haproxy/releases) page. Download the plugin from the latest release and load it into `snapteld` (`/opt/snap/plugins` is the default location for Snap packages).
 
 #### To build the plugin binary:
 
@@ -93,26 +93,26 @@ $ curl -sfLO https://raw.githubusercontent.com/intelsdi-x/snap-plugin-collector-
 ```
 
 Ensure [Snap daemon is running](https://github.com/intelsdi-x/snap#running-snap) with provided configuration file:
-* command line: `snapd -l 1 -t 0 --config cfg.json&`
+* command line: `snapteld -l 1 -t 0 --config cfg.json&`
 
 Download and load Snap plugins:
 ```
 $ wget http://snap.ci.snap-telemetry.io/plugins/snap-plugin-collector-haproxy/latest/linux/x86_64/snap-plugin-collector-haproxy
 $ wget http://snap.ci.snap-telemetry.io/plugins/snap-plugin-publisher-file/latest/linux/x86_64/snap-plugin-publisher-file
 $ chmod 755 snap-plugin-*
-$ snapctl plugin load snap-plugin-collector-haproxy
-$ snapctl plugin load snap-plugin-publisher-file
+$ snaptel plugin load snap-plugin-collector-haproxy
+$ snaptel plugin load snap-plugin-publisher-file
 ```
 
 See available metrics for your system
 ```
-$ snapctl metric list
+$ snaptel metric list
 ```
 
 Download an [example task file](examples/tasks/haproxy-file.json) and load it:
 ```
 $ curl -sfLO https://raw.githubusercontent.com/intelsdi-x/snap-plugin-collector-haproxy/master/examples/tasks/haproxy-file.json
-$ snapctl task create -t haproxy-file.json
+$ snaptel task create -t haproxy-file.json
 Using task manifest to create task
 Task created
 ID: 02dd7ff4-8106-47e9-8b86-70067cd0a850
@@ -120,16 +120,16 @@ Name: Task-02dd7ff4-8106-47e9-8b86-70067cd0a850
 State: Running
 ```
 
-See realtime output from `snapctl task watch <task_id>` (CTRL+C to exit)
+See realtime output from `snaptel task watch <task_id>` (CTRL+C to exit)
 ```
-$ snapctl task watch 02dd7ff4-8106-47e9-8b86-70067cd0a850
+$ snaptel task watch 02dd7ff4-8106-47e9-8b86-70067cd0a850
 ```
 
 This data is published to a file `/tmp/published_haproxy.log` per task specification
 
 Stop task:
 ```
-$ snapctl task stop 02dd7ff4-8106-47e9-8b86-70067cd0a850
+$ snaptel task stop 02dd7ff4-8106-47e9-8b86-70067cd0a850
 
 Task stopped:
 ID: 02dd7ff4-8106-47e9-8b86-70067cd0a850

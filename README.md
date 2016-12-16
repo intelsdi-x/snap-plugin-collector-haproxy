@@ -1,5 +1,5 @@
 # Snap collector plugin - haproxy
-This plugin collects metrics from running HAProxy by reading statistics and informations from Unix socket.
+This plugin collects metrics from running HAProxy by reading statistics and information from Unix socket.
 
 It's used in the [Snap framework](https://github.com/intelsdi-x/snap).
 
@@ -59,7 +59,7 @@ This builds the plugin in `./build/`
 List of collected metrics is described in [METRICS.md](METRICS.md).
 
 ### Snap's Global Config
-Global configuration files are described in [Snap's documentation](https://github.com/intelsdi-x/snap/blob/master/docs/SNAPD_CONFIGURATION.md). You have to add section "haproxy" in "collector" section and then specify following options:
+Global configuration files are described in [Snap's documentation](https://github.com/intelsdi-x/snap/blob/master/docs/SNAPTELD_CONFIGURATION.md). You have to add section "haproxy" in "collector" section and then specify following options:
 - `"socket"` -  indicates stats socket which is set in HAProxy global configuration, for more information read [HAProxy
 Configuration Manual](http://www.haproxy.org/download/1.6/doc/configuration.txt).
 
@@ -149,7 +149,7 @@ We love contributions!
 There's more than one way to give back, from examples to blogs to code updates. See our recommended process in [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ## License
-[Snap](http://github.com:intelsdi-x/snap), along with this plugin, is an Open Source software released under the Apache 2.0 [License](LICENSE).
+[Snap](https://github.com/intelsdi-x/snap), along with this plugin, is an Open Source software released under the Apache 2.0 [License](LICENSE).
 
 ## Acknowledgements
 * Author: [Marcin Krolik](https://github.com/marcin-krolik)

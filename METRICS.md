@@ -29,8 +29,8 @@ Namespace | Data Type | Description
 /intel/haproxy/info/Name | string | the product name
 /intel/haproxy/info/Nbproc | int64 | the number of processes which is created when going daemon
 /intel/haproxy/info/Pid | int64 | the current process id
-/intel/haproxy/info/PipesFree | int64 |  the number of pipes in use
-/intel/haproxy/info/PipesUsed | int64 | the number of pipes unused
+/intel/haproxy/info/PipesFree | int64 | the number of pipes unused
+/intel/haproxy/info/PipesUsed | int64 | the number of pipes in use
 /intel/haproxy/info/Process_num | int64 | the process number
 /intel/haproxy/info/Release_date | string | the release date
 /intel/haproxy/info/Run_queue | int64 | the run queue size

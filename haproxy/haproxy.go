@@ -29,14 +29,13 @@ import (
 	"strings"
 	"time"
 
-	log "github.com/Sirupsen/logrus"
-
 	"github.com/intelsdi-x/snap/control/plugin"
 	"github.com/intelsdi-x/snap/control/plugin/cpolicy"
 	"github.com/intelsdi-x/snap/core"
 	"github.com/intelsdi-x/snap/core/serror"
 
 	"github.com/intelsdi-x/snap-plugin-utilities/config"
+	log "github.com/sirupsen/logrus"
 )
 
 const (
